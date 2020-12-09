@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <style>
+        body{
+            background-image: url("{% static 'image/banner1.jpg' %}");
+            
+        }
+        .container-fluid{
+            height: 130px;
+            
+                    }
+        #link{
+            color: black;
+            text-decoration: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <section class="container-fluid">
+        <div class="container text-white py-4 mt-3">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h1>Weather App</h1>
+                </div>
+                <div class="col-sm-7">
+                    <h2 style="text-align: right;">{{date_time}}</h2>
+                </div>
+            </div>                       
+            
+            <hr class="border-light">
+        </div>
+    </section>
+    <section class="content">
+        <div class="container mt-4">
+            <div class="col-md-5 offset-md-4">
+                <form class="form-inline" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mx-sm-5 mb-2">
+                        <input type="text" class="form-control" name="cname" id="inputtext" placeholder="Enter City Name">                    
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                        {% if msg %}
+                            <div class="alert {{col}}" style="width: 500px;"><center>{{msg}}</center></div>
+                        {% endif %}
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container mt-2" id="bodycontainer">
+            <div class="columns">              
+                <div class="col-md-5 offset-md-4">
+                   {% for city_weather in city_weather %}
+                    <div class="box border my-2 py-3">
+                       
+                        <button type="button" class="close mr-2" aria-label="Close">
+                            <span><a id ="link" href="{% url 'delcity' %}?id={{city_weather.id}}">&times;</a> </span>
+                        </button>
+                          
+                        <article class="media">
+                            <div class="media-left ml-3">
+                                <figure class="image is-50x50">
+                                    <img src="http://api.openweathermap.org/img/w/{{city_weather.icon}}.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content ml-3">
+                                <div class="content">
+                                    <p> <strong>                                       
+                                        <span class="title">{{city_weather.city}}</span>
+                                        <br>
+                                        <span class="subtitle">{{city_weather.temperature}}° C </span>
+                                        <br>{{city_weather.description}}
+                                    </strong>
+                                    </p>
+                                </div>                               
+                            </div>
+                            <div class="media-content1 ml-4">
+                                <div class="content">
+                                    <p> <strong>                                       
+                                        <span class="sunrise">Sunrise : {{city_weather.sunrise}}</span>
+                                        <br>
+                                        <span class="sunset">Sunset : {{city_weather.sunset}} </span></strong>
+                                    </p>
+                                </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>                          
+    </section>               
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
