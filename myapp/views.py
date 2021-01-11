@@ -49,12 +49,12 @@ def index(request):
         weather_data.append(city_weather) 
 
     context['city_weather'] = weather_data 
-    # print(context)
+    print(context)
+    
     return render(request, 'index.html', context)
    
 
 def del_city(request):
-
     id = request.GET.get('id')
     City.objects.filter(id=id).delete()
     return redirect ('/')
